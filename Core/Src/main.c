@@ -26,6 +26,8 @@
 #include "ff.h"
 #include "sd.h"
 #include "vs1053.h"
+#include "uart_io.h"
+#include "app.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -115,22 +117,9 @@ int main(void)
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
 
-	//fs_sd_res = f_mount(&fs_sd, "0:", 1);
-	//printf("mount res=%d\r\n", fs_sd_res);
+	App_Init();          //装配：串口IO + 协议钩子 + 收帧回调注册
 
 
-	//uint8_t fmt_cmd = 0;
-	
-	//VS_Init();
-	//VS_SineTest(0x44,5000);
-	
-		/* 
-		MKFS_PARM opt = { FM_FAT, 1, 0, 512, 0 };
-		fs_sd_res = f_mkfs("0:", &opt, mkfs_work, sizeof(mkfs_work));
-		printf("mkfs res=%d\r\n", fs_sd_res);
-		f_mount(&fs_sd, "0:", 1);
-		*/
-	
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -140,6 +129,7 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+	  App_Poll();          //冲刷发送 + 把收到的字节喂给协议状态机
   }
   /* USER CODE END 3 */
 }
@@ -387,7 +377,7 @@ static void MX_GPIO_Init(void)
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
   if(htim==(TIM_HandleTypeDef*)0){return;}
   if(htim->Instance==TIM3){
-    VS_PUMPHandler();
+    VS_PumpHandler();
   }
 }
 

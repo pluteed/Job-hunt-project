@@ -151,9 +151,7 @@ void VS_PumpHandler(void){
 
 
 
-__weak void VS_BufferEmpty(void){
- 
-}
+
 
 
 

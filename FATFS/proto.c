@@ -185,10 +185,11 @@ int8_t PROTO_Send(uint8_t cmd,uint8_t seq,const uint8_t *pay,uint16_t len){
 
 
 int8_t PROTO_SendAck(uint8_t ack_cmd,uint8_t seq,uint8_t result){
-    uint8_t pay[3];
+    uint8_t pay[ACK_PAY_LEN];
 
-    pay[0]=ack_cmd;
-    pay[1]=seq;
-    pay[2]=result;
-    return PROTO_Send(CMD_ACK,seq,pay,3);
+    pay[ACK_OFF_CMD]=ack_cmd;
+    pay[ACK_OFF_SEQ]=seq;
+    pay[ACK_OFF_RESULT]=result;
+    return PROTO_Send(CMD_ACK,seq,pay,ACK_PAY_LEN);
 }
+

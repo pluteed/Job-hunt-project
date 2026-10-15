@@ -44,6 +44,7 @@
 #define CMD_PREV            0x27u
 #define CMD_SET_VOL         0x28u
 #define CMD_STATUS_REQ      0x29u
+#define CMD_SET_MODE        0x2Au   //设置播放模式，载荷 = u8 模式码（PLAYER_MODE_*）
 
 //状态字 CMD_STATUS用
 #define ST_STOP             0u
@@ -66,6 +67,11 @@
 #define ACK_ERR_BUSY        3u
 #define ACK_ERR_FS          4u
 
+//应答帧载荷在CMD_ACK中的索引，固定3字节
+#define ACK_OFF_CMD         0u      //u8  被应答的命令字，上位机靠它对号入座
+#define ACK_OFF_SEQ         1u      //u8  回显请求序号，跟帧头SEQ同值，冗余存一份便于自校验
+#define ACK_OFF_RESULT      2u      //u8  应答字，取值见上面的 ACK_*
+#define ACK_PAY_LEN         3u      //固定3字节 = 1+1+1
 
 
 typedef struct{
@@ -79,7 +85,7 @@ typedef struct{
 
 //状态帧发送的顺序，所需状态字在载荷中的索引
 #define ST_OFF_STATE        0u
-#define ST_OFF_VOL          1u               
+#define ST_OFF_VOL          1u      //u8  音量0~100，与CMD_SET_VOL同一标度            
 #define ST_OFF_INDEX        2u             
 #define ST_OFF_TOTAL        4u                    
 #define ST_OFF_POS          6u                     
@@ -99,9 +105,25 @@ typedef struct{
     uint16_t name_len;
 }proto_item_t;
 
-
+/* CMD_LIST_ITEM 载荷布局：歌名变长，故 LEN = 2 + name_len */
 #define IT_OFF_INDEX        0u
 #define IT_OFF_NAME         2u
+
+//列表开始/结束帧载荷索引，CMD_LIST_BEGIN与CMD_LIST_END共用
+#define LST_OFF_TOTAL       0u      //u16 曲目总数，BEGIN和END两帧应一致，不一致整批作废
+#define LST_PAY_LEN         2u
+
+//CMD_PLAY_IDX载荷索引
+#define PLY_OFF_INDEX       0u      //u16 曲目序号，从0开始
+#define PLY_PAY_LEN         2u
+
+//CMD_SET_VOL载荷索引，只有百分比，不掺VS1053的衰减语义
+#define VOL_OFF_VOL         0u      //u8  音量0~100，100=最大声，0=静音
+#define VOL_PAY_LEN         1u
+
+//CMD_SET_MODE载荷索引，只有模式码，不掺其它语义
+#define MODE_OFF_CODE       0u      //u8  播放模式码，取值见 PLAYER_MODE_*
+#define MODE_PAY_LEN        1u
 
 
 //存一整帧的结构体

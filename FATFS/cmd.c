@@ -86,5 +86,14 @@ void CMD_Dispatch(const proto_frame_t *f){
         return;
     }
 
+    if (f->cmd == CMD_SET_MODE) {
+        if (f->len < MODE_PAY_LEN) {
+            PROTO_SendAck(CMD_SET_MODE, f->seq, ACK_ERR_PAR);
+            return;
+        }
+        PROTO_SendAck(CMD_SET_MODE, f->seq, PLAYER_SetMode(f->pay[MODE_OFF_CODE]));
+        return;
+    }
+
     PROTO_SendAck(f->cmd, f->seq, ACK_ERR_CMD);
 }
