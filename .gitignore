@@ -3,6 +3,7 @@
 #    注意：C8T6_FATFS/ 是 uvprojx 里指定的输出目录
 # ============================================================
 MDK-ARM/C8T6_FATFS/
+MDK-ARM/RCT6_FATFS/
 *.axf
 *.crf
 *.o

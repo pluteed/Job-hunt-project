@@ -8,6 +8,7 @@
 #include "uart_io.h"
 #include "cmd.h"
 #include "player.h"
+#include "vs1053.h"
 #include "filelist.h"
 
 void App_Init(void){
@@ -25,11 +26,11 @@ void App_Init(void){
     }
 
     //4.VS1053（等player写完、VS_Init里没有printf依赖后再打开）
-    //VS_Init();
-    //VS_SetVolume(0x30,0x30);
+    VS_Init();
+    VS_SetVolume(0x30,0x30);
 
     //5.TIM3时钟泵，必须最后启动
-    //VS_PumpInit();
+    VS_PumpInit();
 }
 
 void App_Poll(void){
@@ -40,9 +41,9 @@ void App_Poll(void){
     FILELIST_Service();
 
     //3.播放器填缓冲（等player写完再打开）
-    //PLAYER_Service();
+    PLAYER_Service();
 
     //4.每秒主动上报状态（等真实现后打开，间隔1000ms）
-    //static uint32_t s_tick=0;
-    //if(HAL_GetTick()-s_tick>=1000u){ s_tick=HAL_GetTick(); CMD_SendStatus(0); }
+    static uint32_t s_tick=0;
+    if(HAL_GetTick()-s_tick>=1000u){ s_tick=HAL_GetTick(); CMD_SendStatus(0); }
 }

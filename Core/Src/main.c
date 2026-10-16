@@ -129,7 +129,7 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	  App_Poll();          //冲刷发送 + 把收到的字节喂给协议状态机
+	  App_Poll();          //冲刷发�?? + 把收到的字节喂给协议状�?�机
   }
   /* USER CODE END 3 */
 }

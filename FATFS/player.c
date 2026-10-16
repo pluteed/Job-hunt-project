@@ -12,7 +12,7 @@ static uint8_t s_buf_b[PLAYER_BUF_SIZE];
 
 static uint8_t *s_fill;
 static uint8_t *s_send;
-static uint16_t s_fill_len;//填充块中的有效字节数
+static uint16_t s_fill_len;   //填充块中的有效字节数
 
 static FIL s_file;
 static uint8_t s_file_open;
@@ -234,8 +234,8 @@ uint8_t PLAYER_Play(uint16_t idx)
 }
 
 uint8_t PLAYER_Pause(void){
-    if(s_state!=ST_PLAYING){return ACK_ERR_BUSY};
-    if(s_cancel_phase!=0u){return ACK_ERR_BUSY};    
+    if(s_state!=ST_PLAYING){return ACK_ERR_BUSY;}
+    if(s_cancel_phase!=0u){return ACK_ERR_BUSY;}    
     StopPump();
     VS_SetVolume(0xFEu, 0xFEu);   /* 暂停即静音：FIFO 残留仍在解，但被音量档住听不到；0xFE=254 衰减档（非 0xFF 掉电） */
     s_state = ST_PAUSE;
@@ -392,7 +392,7 @@ void PLAYER_Service(void){
         s_pos_sec = VS_ReadReg(SCI_DECODE_TIME);   /* 芯片自己算的解码秒数 */
 
         if (s_dur_sec == 0 && s_file_open) {
-            byterate = VS_ReadPara(PARA_BYTERATE);  /* 字节/秒 */
+            byterate = VS_ReadXPara(PARA_BYTERATE);  /* 字节/秒 */
             if (byterate != 0) {
                 s_dur_sec = (uint32_t)(f_size(&s_file) / byterate);
             }

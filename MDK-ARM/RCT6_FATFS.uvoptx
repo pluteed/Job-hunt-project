@@ -22,7 +22,7 @@
   </DaveTm>
 
   <Target>
-    <TargetName>C8T6_FATFS</TargetName>
+    <TargetName>RCT6_FATFS</TargetName>
     <ToolsetNumber>0x4</ToolsetNumber>
     <ToolsetName>ARM-ADS</ToolsetName>
     <TargetOption>
@@ -194,8 +194,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>startup_stm32f103xb.s</PathWithFileName>
-      <FilenameWithoutPath>startup_stm32f103xb.s</FilenameWithoutPath>
+      <PathWithFileName>startup_stm32f103xe.s</PathWithFileName>
+      <FilenameWithoutPath>startup_stm32f103xe.s</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
